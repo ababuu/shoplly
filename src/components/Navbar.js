@@ -10,11 +10,12 @@ const StyledContainer=styled.div`
     position: relative;
 `;
 const StyledToolbar=styled(Toolbar)`
-    background: white;
     border: 1px solid black;
     margin:auto;
     height: 10vh;
     color:black;
+    background-color: #FCFCFC;
+    box-shadow:none
 `
 const LinkContainer=styled.div`
     display:flex;
@@ -34,7 +35,6 @@ const CartAvatarContainer=styled.div`
 `
 const CartContainer=styled.div`
     width:fit-content;
-    // height:35px;
     border:1px solid black;
     display:flex;
     justify-content:center;
@@ -45,19 +45,37 @@ const CartContainer=styled.div`
 `
 
 const StyledAppbar=styled(AppBar)`
-    width:95%;
-    margin:auto;
-`
-const StyledLinks=styled.a`
-
-`
-const SearchBarConatiner=styled.div`
-    display:flex;
-    justify-content:center;
-    algn-items:center;
+box-shadow:none
 `
 const StyledCartLogo=styled(LocalMallOutlinedIcon)`
     font-size:13px;
+`
+const SearchBarContainer=styled.div`
+    display:flex;
+    justify-content:center;
+    algn-items:center;
+    flex-direction: column
+`
+const InputContainer=styled.div`
+    width:100%;
+    border:1px solid black;
+`
+const StyledInput=styled.input`
+    width:25%;
+    padding:10px;
+    border:0.5px solid gray;
+    box-shadow:none;
+    margin:10px;
+    border-radius:20px
+`
+const ProductsContainer=styled.div`
+    width:100%;
+    border:1px solid black;
+    display:flex;
+    justify-content:center;
+    algn-items:center;
+    gap:50px
+
 `
 
 export default function NavBar() {
@@ -84,6 +102,19 @@ return (
             </StyledToolbar>
         </StyledContainer>
     </StyledAppbar>
+    <SearchBarContainer>
+            <InputContainer>
+                <StyledInput placeholder='Search'/>
+            </InputContainer>
+            <ProductsContainer>
+                <p>Furnitures</p>
+                <p>Electronics</p>
+                <p>Vehicles</p>
+                <p>Accessories</p>
+                <p>Fashion</p>
+
+            </ProductsContainer>
+        </SearchBarContainer>
     </Box>
 );
 }
