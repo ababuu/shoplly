@@ -1,7 +1,11 @@
-import React from 'react';
+import React, { createContext } from 'react';
 import styled from '@emotion/styled';
 import { keyframes } from 'styled-components'
 import '../style/MainContent.css';
+import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
+import NavBar from './Navbar';
+import CartContext from './CartContext';
+
 
 const slideAnime = keyframes`
 0% {
@@ -229,13 +233,17 @@ const ProductsContainer=styled.div`
     justify-content:center;
     algn-items:center;
     gap:50px;
-    border:1px solid black;
+    height:25px;
+    position:relative;
 `
 const StyledText=styled.p`
     color:gray;
     cursor:pointer;
     font-size:12px;
     font-weight: bold;
+    &.selected {
+        color:black;
+    }
 `
 const StyledSortText=styled.p`
 font-size:12px;
@@ -245,12 +253,20 @@ font-weight: bold;
 const furnitureFilter=['Sofas','Beds','Tables','TV Stand','Wardrobe','Cabinets','Other'];
 const electronicsFilter=['Smart Phones','Laptop','TV','Headphones','Speakers','Keyboard','Other'];
 
+function removeItem(arr, item) {
+    return arr.filter((f) => f !== item);
+    }
+let filtersItems=[];
+let display=[];
 function MainContent(props) {
     const [catagory, setCatagory] = React.useState(furnitures);
     const [filters, setFilters]=React.useState(furnitureFilter);
+    const [selection, setSelection]=React.useState('furnitures');
+    const [filterSelected,setFilterSelected]=React.useState([]);
+    const [filtered,setFiltered]=React.useState(false);
+    const [cart,setCart]=React.useState([]);
     const [key, setKey] = React.useState(0);
-    const [indicatorPosition, setIndicatorPosition] = React.useState();
-    const [indicatorWidth, setIndicatorWidth] = React.useState();
+    const [indicatorPosition, setIndicatorPosition] = React.useState(408.03125);
     const navElement = React.useRef();
     const handleCatagoryClick=(e)=>{
         handleClick(e);
@@ -259,46 +275,82 @@ function MainContent(props) {
             setCatagory(furnitures);
             setFilters(furnitureFilter);
             setKey(0);
+            setSelection('furnitures');
         }
         else if(cata=='Electronics'){
             setCatagory(electronics);
             setFilters(electronicsFilter);
             setKey(1);
+            setSelection('electronics');
         }
     }
     const handleClick = (event) => {
         const linkLeft = event.currentTarget.getBoundingClientRect().left;
         const navLeft = navElement.current.getBoundingClientRect().left;
-        const linkWidth = event.currentTarget.getBoundingClientRect().width;
-        const singleLinkWidth = linkWidth;
         const singleLinkLeft = linkLeft - navLeft;
         setIndicatorPosition(singleLinkLeft);
-        setIndicatorWidth(singleLinkWidth);
-        console.log(navLeft);
     };
+    const handleChange = (e) => { 
+        const clickedFilter=e.currentTarget.value;
+        setFiltered(true);
+        if(!filtersItems.includes(clickedFilter)){
+            filtersItems.push(clickedFilter);
+        }
+        else if(filtersItems.includes(clickedFilter)){
+            filtersItems=removeItem(filtersItems,clickedFilter);
+        }
+        filtersItems.map(filter=>{
+            
+            if(filter=='Sofas'){
+                console.log('hello')
+                setFilterSelected([...filterSelected,sofa])
+                display.push(sofa);
+            }
+            else if(filter=='Beds'){
+                setFilterSelected([...filterSelected,chairs]);
+                display.push(chairs)
+            }
+        })
+        console.log(filtersItems)
+        console.log(filterSelected);
+    };
+    const handleAdd=(cata)=>{
+        setCart([...cart, cata]);
+        
+    }
+    const handleDelete=(el)=>{
+        let hardCopy = [...cart];
+        hardCopy = hardCopy.filter((cartItem) => cartItem.id !== el.id);
+        setCart(hardCopy);
+    }
     const Indicator = styled.div`
-  position: absolute;
-  bottom: 5px;
-  width: ${({ width }) => `${width}px`};
-  left: ${({ left }) => `${left}px`};
-  height: 3px;
-  background: black;
-  transition: all .5s ease-in-out;
+        position: absolute;
+        bottom: 5px;
+        width:20px;
+        left: ${({ left }) => `${left+15}px`};
+        height: 3px;
+        background: black;
+        transition: all .3s ease-in-out;
+        border-radius:10px;
 `;
     return (
         <div>
+            <CartContext.Provider value={{cart,handleDelete}}>
+                <NavBar cartItems={cart}/>
+            </CartContext.Provider>
             <SearchBarContainer ref={navElement}>
             <InputContainer>
                 <StyledInput placeholder='Search'/>
             </InputContainer>
             <br/>
             <ProductsContainer >
-                <StyledText onClick={handleCatagoryClick}>Furnitures</StyledText>
-                <StyledText onClick={handleCatagoryClick}>Electronics</StyledText>
+                <Indicator left={indicatorPosition}/>
+                <StyledText className={selection=='furnitures' ? 'selected' :''} onClick={handleCatagoryClick}>Furnitures</StyledText>
+                <StyledText className={selection=='electronics' ? 'selected' :''} onClick={handleCatagoryClick}>Electronics</StyledText>
                 <StyledText onClick={handleCatagoryClick}>Vehicles</StyledText>
                 <StyledText onClick={handleCatagoryClick}>Accessories</StyledText>
                 <StyledText onClick={handleCatagoryClick}>Fashion</StyledText>
-                <Indicator left={indicatorPosition} width={indicatorWidth} />
+                
             </ProductsContainer>
             <br/>
             <hr/>
@@ -312,7 +364,7 @@ function MainContent(props) {
                     <div className="check__item " key={key}>
                         {filters.map(filter=>(
                             <label key={filter}>
-                                <input type="checkbox" className="default__check" name="filter" value={filter}/>
+                                <input type="checkbox" onChange={handleChange} className="default__check" name="filter" value={filter}/>
                                 <span className="custom__check"></span>
                                 <p className='tracking-in-expand filter-text'>{filter}</p>
                             </label>
@@ -351,17 +403,27 @@ function MainContent(props) {
                 </SortContainer>
             </StyledSidebar>
             <div className='grid-container slide' key={key}>
-                {catagory.map((cata,id)=>(
-                    <GridElements key={id}>
+                {!filtered && catagory.map((cata,id)=>(
+                    <GridElements  key={id}>
                     <StyledImg src={cata.src}/>
                         <NameText>{cata.name}</NameText>
                         <PriceText>{cata.price}</PriceText>
-                        <AddtoCartBtn>Add to cart</AddtoCartBtn>
-                    
+                        <AddtoCartBtn className="effect effect-1" onClick={()=>handleAdd(cata)}>Add to cart</AddtoCartBtn>
                 </GridElements>
                 ))}
                 
             </div>
+            {filtered && display.map(filterValues=>{
+                    filterValues.map((filterValue,id)=>(
+                        <GridElements key={id}>
+                            <StyledImg src={filterValue.src}/>
+                            <NameText>{filterValue.name}</NameText>
+                            <PriceText>{filterValue.price}</PriceText>
+                            <AddtoCartBtn>Add to cart</AddtoCartBtn>
+                       </GridElements>
+                    ))
+                })}
+                
         </StyledContainer>
         </div>
     );
