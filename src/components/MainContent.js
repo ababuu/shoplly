@@ -164,14 +164,14 @@ const SortContainer=styled.div`
 
 const GridElements=styled.div`
     width:180px;
-    height:230px;
+    height:240px;
     background:white;
     float:left;
     margin:15px;
     padding:10px;
     border-radius:10px;
     box-shadow: 1px 1px 2px  lightgrey;
-    
+    position:relative;
 `
 const StyledImg=styled.img`
     width:100%;
@@ -183,20 +183,22 @@ const PriceButtoncontainer=styled.div`
 `
 const PriceText=styled.p`
 position:absolute;
-top:0;
-right:0;
+bottom:45px;
+right:10px;
+font-size:11px
 `
 const NameText=styled.p`
 position:absolute;
-top:0;
-left:0;
+bottom:45px;
+left:10px;
+font-size:11px
 `
 const AddtoCartBtn=styled.button`
 padding:5px;
 width: 160px;
 position:absolute;
-bottom:2px;
-left:0px;
+bottom:7px;
+left:10px;
 border-radius:20px;
 border:0px;
 color:white;
@@ -207,6 +209,8 @@ const SearchBarContainer=styled.div`
     justify-content:center;
     algn-items:center;
     flex-direction: column;
+    width:100%;
+    
 `
 const InputContainer=styled.div`
     width:100%;
@@ -224,40 +228,77 @@ const ProductsContainer=styled.div`
     display:flex;
     justify-content:center;
     algn-items:center;
-    gap:50px
+    gap:50px;
+    border:1px solid black;
 `
 const StyledText=styled.p`
     color:gray;
     cursor:pointer;
+    font-size:12px;
+    font-weight: bold;
 `
+const StyledSortText=styled.p`
+font-size:12px;
+font-weight: bold;
+`
+
+const furnitureFilter=['Sofas','Beds','Tables','TV Stand','Wardrobe','Cabinets','Other'];
+const electronicsFilter=['Smart Phones','Laptop','TV','Headphones','Speakers','Keyboard','Other'];
 
 function MainContent(props) {
     const [catagory, setCatagory] = React.useState(furnitures);
+    const [filters, setFilters]=React.useState(furnitureFilter);
     const [key, setKey] = React.useState(0);
+    const [indicatorPosition, setIndicatorPosition] = React.useState();
+    const [indicatorWidth, setIndicatorWidth] = React.useState();
+    const navElement = React.useRef();
     const handleCatagoryClick=(e)=>{
+        handleClick(e);
         const cata=e.currentTarget.innerText;
         if(cata=='Furnitures'){
             setCatagory(furnitures);
+            setFilters(furnitureFilter);
             setKey(0);
         }
         else if(cata=='Electronics'){
             setCatagory(electronics);
+            setFilters(electronicsFilter);
             setKey(1);
         }
     }
+    const handleClick = (event) => {
+        const linkLeft = event.currentTarget.getBoundingClientRect().left;
+        const navLeft = navElement.current.getBoundingClientRect().left;
+        const linkWidth = event.currentTarget.getBoundingClientRect().width;
+        const singleLinkWidth = linkWidth;
+        const singleLinkLeft = linkLeft - navLeft;
+        setIndicatorPosition(singleLinkLeft);
+        setIndicatorWidth(singleLinkWidth);
+        console.log(navLeft);
+    };
+    const Indicator = styled.div`
+  position: absolute;
+  bottom: 5px;
+  width: ${({ width }) => `${width}px`};
+  left: ${({ left }) => `${left}px`};
+  height: 3px;
+  background: black;
+  transition: all .5s ease-in-out;
+`;
     return (
         <div>
-            <SearchBarContainer>
+            <SearchBarContainer ref={navElement}>
             <InputContainer>
                 <StyledInput placeholder='Search'/>
             </InputContainer>
             <br/>
-            <ProductsContainer>
+            <ProductsContainer >
                 <StyledText onClick={handleCatagoryClick}>Furnitures</StyledText>
                 <StyledText onClick={handleCatagoryClick}>Electronics</StyledText>
                 <StyledText onClick={handleCatagoryClick}>Vehicles</StyledText>
                 <StyledText onClick={handleCatagoryClick}>Accessories</StyledText>
                 <StyledText onClick={handleCatagoryClick}>Fashion</StyledText>
+                <Indicator left={indicatorPosition} width={indicatorWidth} />
             </ProductsContainer>
             <br/>
             <hr/>
@@ -266,72 +307,44 @@ function MainContent(props) {
             <StyledSidebar>
                 
                 <FilterContainer>
-                    <p className='title'>Filter</p>
+                    <p className='title filter-text'>Filter</p>
                     <hr/>
-                    <div className="check__item">
-                        <label>
-                        <input type="checkbox" className="default__check" name="filter" value="sofas"/>
-                        <span className="custom__check"></span>
-                        <p>Sofas</p>
-                        </label>
-                        <label>
-                        <input type="checkbox" className="default__check" id="beds" name="filter" value="beds"/>
-                        <span className="custom__check"></span>
-                        <p>Beds</p>
-                        </label>
-                        <label>
-                        <input type="checkbox" className="default__check" name="filter" value="tables"/>
-                        <span className="custom__check"></span>
-                        <p>Tables</p>
-                        </label>
-                        <label>
-                        <input type="checkbox" className="default__check" name="filter" value="tv stands"/>
-                        <span className="custom__check"></span>
-                        <p>TV Stand</p>
-                        </label>
-                        <label>
-                        <input type="checkbox" className="default__check" name="filter" value="wardrobes"/>
-                        <span className="custom__check"></span>
-                        <p>Wardrobe</p>
-                        </label>
-                        <label>
-                        <input type="checkbox" className="default__check" name="filter" value="cabinets"/>
-                        <span className="custom__check"></span>
-                        <p>Cabinets</p>
-                        </label>
-                        <label>
-                        <input type="checkbox" className="default__check" name="filter" value="other"/>
-                        <span className="custom__check"></span>
-                        <p>Other</p>
-                        </label>
+                    <div className="check__item " key={key}>
+                        {filters.map(filter=>(
+                            <label key={filter}>
+                                <input type="checkbox" className="default__check" name="filter" value={filter}/>
+                                <span className="custom__check"></span>
+                                <p className='tracking-in-expand filter-text'>{filter}</p>
+                            </label>
+                        ))}
                     </div>
                     
                 </FilterContainer>
                 
                 <SortContainer>
-                    <p className='title'>Sort</p>
+                    <StyledSortText className='title'>Sort</StyledSortText>
                     <hr/>
                     <form>
                     <div className="check__item">
                     <label>
                         <input type="radio"  className="default__check" name='sort'/>
                         <span className="custom__check"></span>
-                        <p>Discounts</p>
+                        <StyledSortText>Discounts</StyledSortText>
                     </label>
                     <label>
                         <input type="radio" className="default__check" name='sort'/>
                         <span className="custom__check"></span>
-                        <p>Best Selling</p>
+                        <StyledSortText>Best Selling</StyledSortText>
                     </label>
                     <label>
                         <input type="radio" className="default__check" name='sort'/>
                         <span className="custom__check"></span>
-                        <p>Price, low to high</p>
+                        <StyledSortText>Price, low to high</StyledSortText>
                     </label>
                     <label>
                         <input type="radio" className="default__check" name='sort'/>
                         <span className="custom__check"></span>
-                        <p>Price, high to low</p>
+                        <StyledSortText>Price, high to low</StyledSortText>
                     </label>
                     </div>
                     </form>
@@ -341,11 +354,10 @@ function MainContent(props) {
                 {catagory.map((cata,id)=>(
                     <GridElements key={id}>
                     <StyledImg src={cata.src}/>
-                    <PriceButtoncontainer>
                         <NameText>{cata.name}</NameText>
                         <PriceText>{cata.price}</PriceText>
                         <AddtoCartBtn>Add to cart</AddtoCartBtn>
-                    </PriceButtoncontainer>
+                    
                 </GridElements>
                 ))}
                 

@@ -50,7 +50,9 @@ const StyledCartLogo=styled(LocalMallOutlinedIcon)`
     font-size:16px;
 `
 const StyledText=styled.p`
-    color:gray
+    color:gray;
+    font-weight:bold;
+    font-size:12px
 `
 
 export default function NavBar() {
