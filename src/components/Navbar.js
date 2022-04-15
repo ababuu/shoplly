@@ -191,7 +191,6 @@ const StyledText=styled.p`
 export default function NavBar() {
     const {cart,handleDelete}=React.useContext(CartContext);
     const [open, setOpen] = React.useState(false);
-    console.log(cart);
     const handleCartClick=()=>{
         setOpen(!open);
     }
