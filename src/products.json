@@ -5,56 +5,64 @@
             "name":"Gather Sofa",
             "src":"https://cb.scene7.com/is/image/Crate/Gather88inSofaICSOSSF20_3D_1x1/$web_plp_card$/200820160640/gather-sofa.jpg",
             "price":"$1,849.00",
-            "catagory":"sofa"
+            "priceNumber":1849,
+            "catagory":"Sofas"
         },
         {
             "id":2,
-            "name":"Ojai Chair",
-            "src":"https://cb.scene7.com/is/image/Crate/OjaiUphWFAcntChrBCSOSSS22_3D/$web_plp_card$/220118124451/ojai-upholstered-wood-frame-accent-chair.jpg",
-            "price":"$799.00",
-            "catagory":"chair"
+            "name":"Emma Oak Table",
+            "src":"https://cb.scene7.com/is/image/Crate/EmmaWoodCoffeeTableSOSSS22/$web_plp_card$/220103133319/emma-oak-coffee-table.jpg",
+            "price":"$1,199.00",
+            "priceNumber":1199,
+            "catagory":"Tables"
         },
         {
             "id":3,
-            "name":"Avondale Sofa",
+            "name":"Avondale Bed",
             "src":"https://cb.scene7.com/is/image/Crate/TerraQnBedSOSSS22/$web_plp_card$/211220110249/terra-bed.jpg",
-            "price":"$1,849.00",
-            "catagory":"sofa"
+            "price":"$1,549.00",
+            "priceNumber":1549,
+            "catagory":"Beds"
         },
         {
             "id":4,
-            "name":"Lafayette Bed",
+            "name":"Lafayette sofa",
             "src":"https://cb.scene7.com/is/image/Crate/PacificSofa2StBCSOSSS21_3D/$web_plp_card$/210427160306/pacific-2-seat-track-arm-sofa-with-wood-legs.jpg",
             "price":"$2,849.00",
-            "catagory":"bed"
+            "priceNumber":2849,
+            "catagory":"Sofas"
         },
         {
             "id":5,
             "name":"Terra Bed",
             "src":"https://cb.scene7.com/is/image/Crate/LafayetteUphQnBdLMSOSSS21_3D/$web_plp_card$/210113175545/lafayette-mist-upholstered-bed.jpg",
             "price":"$1,200.00",
-            "catagory":"bed"
+            "priceNumber":1200,
+            "catagory":"Beds"
         },
         {
             "id":6,
-            "name":"Wells Chair",
-            "src":"https://cb.scene7.com/is/image/Crate/WellsLthrChairCynSOSSF20_1x1/$web_plp_card$/200720144738/wells-leather-tuxedo-chair.jpg",
-            "price":"$1,899.00",
-            "catagory":"chair"
+            "name":"Yukon Table",
+            "src":"https://cb.scene7.com/is/image/Crate/YukonCoffeeTableSOSSS20_1x1/$web_plp_card$/200623154639/yukon-natural-coffee-table.jpg",
+            "price":"$799.00",
+            "priceNumber":799,
+            "catagory":"Tables"
         },
         {
             "id":7,
             "name":"Gather Bed",
             "src":"https://cb.scene7.com/is/image/Crate/GatherQnBdIvorySOSSS22_3D/$web_plp_card$/220121175412/gather-white-upholstered-bed.jpg",
             "price":"$1,999.00",
-            "catagory":"bed"
+            "priceNumber":1999,
+            "catagory":"Beds"
         },
         {
             "id":8,
             "name":"Wells Sofa",
             "src":"https://cb.scene7.com/is/image/Crate/WellsLthrSofa84inCynSOSSF20_1x1/$web_plp_card$/200720144725/wells-leather-tuxedo-sofa.jpg",
             "price":"$3,099.00",
-            "catagory":"sofa"
+            "priceNumber":3099,
+            "catagory":"Sofas"
         }
     ],
     "electronics":[
@@ -63,42 +71,126 @@
             "name":"Apple iPhone 13",
             "src":"https://c1.neweggimages.com/ProductImageCompressAll300/AN2HS211002kKERn.jpg",
             "price":"$1,709.99",
-            "catagory":"phone"
+            "priceNumber":1709,
+            "catagory":"Smart Phones"
         },
         {
             "id":2,
             "name":"Apple iPhone SE ",
             "src":"https://c1.neweggimages.com/ProductImageCompressAll300/AAM8S200527Iir5F.jpg",
             "price":"$799.00",
-            "catagory":"phone"
+            "priceNumber":799,
+            "catagory":"Smart Phones"
         },
         {
             "id":3,
             "name":"Dell - Inspiron 7000",
             "src":"https://pisces.bbystatic.com/image2/BestBuy_US/images/products/6432/6432554_sd.jpg;maxHeight=200;maxWidth=300",
             "price":"$1,279.99",
-            "catagory":"laptop"
+            "priceNumber":1279,
+            "catagory":"Laptop"
         },
         {
             "id":4,
             "name":"ASUS - Vivobook",
             "src":"https://pisces.bbystatic.com/image2/BestBuy_US/images/products/6469/6469397_sd.jpg;maxHeight=200;maxWidth=300",
             "price":"$319.99",
-            "catagory":"laptop"
+            "priceNumber":319,
+            "catagory":"Laptop"
         },
         {
             "id":5,
             "name":"Samsung - 55in 4K",
             "src":"https://pisces.bbystatic.com/image2/BestBuy_US/images/products/6401/6401735_sd.jpg;maxHeight=200;maxWidth=300",
             "price":"$409.99",
-            "catagory":"tv"
+            "priceNumber":409,
+            "catagory":"TV"
         },
         {
             "id":6,
             "name":"LG - 86in 4K",
             "src":"https://pisces.bbystatic.com/image2/BestBuy_US/images/products/6452/6452986_sd.jpg;maxHeight=200;maxWidth=300",
             "price":"$1,899.00",
-            "catagory":"tv"
+            "priceNumber":1899,
+            "catagory":"TV"
         }
-    ]
+    ],
+    "discounts":{
+        "furnitures":[
+            {
+                "id":1,
+                "name":"Lafayette sofa",
+                "src":"https://cb.scene7.com/is/image/Crate/PacificSofa2StBCSOSSS21_3D/$web_plp_card$/210427160306/pacific-2-seat-track-arm-sofa-with-wood-legs.jpg",
+                "price":"$2,849.00",
+                "catagory":"Sofas"
+            },
+            {
+                "id":2,
+                "name":"Gather Bed",
+                "src":"https://cb.scene7.com/is/image/Crate/GatherQnBdIvorySOSSS22_3D/$web_plp_card$/220121175412/gather-white-upholstered-bed.jpg",
+                "price":"$1,999.00",
+                "catagory":"Beds"
+            },
+            {
+                "id":3,
+                "name":"Wells Sofa",
+                "src":"https://cb.scene7.com/is/image/Crate/WellsLthrSofa84inCynSOSSF20_1x1/$web_plp_card$/200720144725/wells-leather-tuxedo-sofa.jpg",
+                "price":"$3,099.00",
+                "catagory":"Sofas"
+            },
+            {
+                "id":4,
+                "name":"Yukon Table",
+                "src":"https://cb.scene7.com/is/image/Crate/YukonConsoleTableSSS20_1x1/$web_plp_card$/200623090006/yukon-natural-console-table.jpg",
+                "price":"$799.00",
+                "catagory":"Tables"
+            },
+            {
+                "id":5,
+                "name":"Wells Leather Sofa",
+                "src":"https://cb.scene7.com/is/image/Crate/WellsLthrSofa84inCharSOSSF20_1x1/$web_plp_card$/210812090620/wells-leather-sofa.jpg",
+                "price":"$1799.00",
+                "catagory":"Sofa"
+            }
+        ]
+    },
+    "bestSelling":{
+        "furnitures":[
+            {
+                "id":1,
+                "name":"Lafayette sofa",
+                "src":"https://cb.scene7.com/is/image/Crate/PacificSofa2StBCSOSSS21_3D/$web_plp_card$/210427160306/pacific-2-seat-track-arm-sofa-with-wood-legs.jpg",
+                "price":"$2,849.00",
+                "catagory":"Sofas"
+            },
+            {
+                "id":2,
+                "name":"Gather Bed",
+                "src":"https://cb.scene7.com/is/image/Crate/GatherQnBdIvorySOSSS22_3D/$web_plp_card$/220121175412/gather-white-upholstered-bed.jpg",
+                "price":"$1,999.00",
+                "catagory":"Beds"
+            },
+            {
+                "id":3,
+                "name":"Wells Sofa",
+                "src":"https://cb.scene7.com/is/image/Crate/WellsLthrSofa84inCynSOSSF20_1x1/$web_plp_card$/200720144725/wells-leather-tuxedo-sofa.jpg",
+                "price":"$3,099.00",
+                "catagory":"Sofas"
+            },
+            {
+                "id":4,
+                "name":"Yukon Table",
+                "src":"https://cb.scene7.com/is/image/Crate/YukonConsoleTableSSS20_1x1/$web_plp_card$/200623090006/yukon-natural-console-table.jpg",
+                "price":"$799.00",
+                "catagory":"Tables"
+            },
+            {
+                "id":5,
+                "name":"Wells Leather Sofa",
+                "src":"https://cb.scene7.com/is/image/Crate/WellsLthrSofa84inCharSOSSF20_1x1/$web_plp_card$/210812090620/wells-leather-sofa.jpg",
+                "price":"$1799.00",
+                "catagory":"Sofa"
+            }
+        ]
+    }
 }

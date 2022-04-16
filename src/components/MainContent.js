@@ -6,7 +6,8 @@ import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
 import NavBar from './Navbar';
 import CartContext from './CartContext';
 import productData from '../products.json';
-
+import discountImg from '../images/discount.png'
+import bestSellingImg from '../images/bestSelling.png'
 const slideAnime = keyframes`
 0% {
     transform: translateY(0);
@@ -96,6 +97,9 @@ const SearchBarContainer=styled.div`
 `
 const InputContainer=styled.div`
     width:100%;
+    display:flex;
+    justify-content:center;
+    algn-items:center;
 `
 const StyledInput=styled.input`
     width:25%;
@@ -128,18 +132,87 @@ font-size:12px;
 font-weight: bold;
 `
 
-const furnitureFilter=['Sofas','Beds','Tables','TV Stand','Wardrobe','Cabinets','Other'];
-const electronicsFilter=['Smart Phones','Laptop','TV','Headphones','Speakers','Keyboard','Other'];
+const furnitureFilter=[
+    {
+        name:'Sofas',
+        id:1
+    },
+    {
+        name:'Beds',
+        id:2
+    },
+    {
+        name:'Tables',
+        id:3
+    },
+    {
+        name:'TV Stand',
+        id:4
+    },
+    {
+        name:'Wardrobe',
+        id:5
+    },
+    {
+        name:'Cabinets',
+        id:6
+    },
+    {
+        name:'Other',
+        id:7
+    },
+    ];
+    const electronicsFilter=[
+        {
+            name:'Smart Phones',
+            id:1
+        },
+        {
+            name:'Laptop',
+            id:2
+        },
+        {
+            name:'TV',
+            id:3
+        },
+        {
+            name:'Headphones',
+            id:4
+        },
+        {
+            name:'Speakers',
+            id:5
+        },
+        {
+            name:'Keyboard',
+            id:6
+        },
+        {
+            name:'Other',
+            id:7
+        },
+        ];
 
-function removeItem(arr, item) {
-    return arr.filter((f) => f !== item);
-    }
-let filtersItems=[];
-let display=[];
+const StyledDiscountImg=styled.img`
+    width:70px;
+    position:absolute;
+    top:0px;
+    right:0px
+`
+const ImageContainer=styled.div`
+width:fit-content;
+position:relative;
+`
 function MainContent() {
-    const [products, setCatagory] = React.useState(productData.furnitures);
+    const [products, setProducts] = React.useState(productData.furnitures);
+    const [Discountproducts, setDiscountProducts] = React.useState(productData.discounts.furnitures);
+    const [BestSellingproducts, setBestSellingProducts] = React.useState(productData.bestSelling.furnitures);
+    const [addedtoCart,setAddedtoCart]=React.useState(false);
+    const [bestSelling, setBestSelling] = React.useState(false);
     const [filters, setFilters]=React.useState(furnitureFilter);
     const [selection, setSelection]=React.useState('furnitures');
+    const [discount, setDiscount]=React.useState(false);
+    const [checked, setChecked]=React.useState('');
     const [cart,setCart]=React.useState([]);
     const [key, setKey] = React.useState(0);
     const [indicatorPosition, setIndicatorPosition] = React.useState(408.03125);
@@ -148,13 +221,14 @@ function MainContent() {
         handleClick(e);
         const cata=e.currentTarget.innerText;
         if(cata=='Furnitures'){
-            setCatagory(productData.furnitures);
+            setProducts(productData.furnitures);
             setFilters(furnitureFilter);
             setKey(0);
             setSelection('furnitures');
+            setDiscountProducts(productData.discounts.furnitures);
         }
         else if(cata=='Electronics'){
-            setCatagory(productData.electronics);
+            setProducts(productData.electronics);
             setFilters(electronicsFilter);
             setKey(1);
             setSelection('electronics');
@@ -166,11 +240,51 @@ function MainContent() {
         const singleLinkLeft = linkLeft - navLeft;
         setIndicatorPosition(singleLinkLeft);
     };
-    const handleChange = (e) => { 
-        const clickedFilter=e.currentTarget.value;
+    const handleFilter = (value) => { 
+        if(checked==value){
+            setChecked('');
+            setProducts(productData[selection])
+        }
+        else{
+            setChecked(value);
+            setProducts(productData[selection].filter(product=>product.catagory.indexOf(value)>=0))
+        }
+        
     };
+    const handleSort= (e)=>{
+        const checked=e.target.value;
+        if(checked=='Discounts'){
+            setDiscount(true);
+            setBestSelling(false)
+        }
+        else if(checked=='Best Selling'){
+            setDiscount(false);
+            setBestSelling(true);
+        }
+        else if(checked=='Price, low to high'){
+            setDiscount(false);
+            setBestSelling(false);
+            products.sort(function(a, b){
+                return a.priceNumber - b.priceNumber;
+            })
+            setProducts(products);
+        }
+        else if(checked=='Price, high to low'){
+            setDiscount(false);
+            setBestSelling(false);
+            products.sort(function(a, b){
+                return b.priceNumber - a.priceNumber;
+            })
+            setProducts([]);
+            setProducts(products);
+        }
+    }
+
     const handleAdd=(cata)=>{
-        setCart([...cart, cata]);
+        if(!cart.includes(cata)){
+            setCart([...cart, cata]);
+            setAddedtoCart(true);
+        }
         
     }
     const handleDelete=(el)=>{
@@ -217,11 +331,19 @@ function MainContent() {
                     <p className='title filter-text'>Filter</p>
                     <hr/>
                     <div className="check__item " key={key}>
-                        {filters.map(filter=>(
-                            <label key={filter}>
-                                <input type="checkbox" onChange={handleChange} className="default__check" name="filter" value={filter}/>
+                        {filters.map((filter,id)=>(
+                            <label key={id}>
+                                <input 
+                                type="checkbox" 
+                                onChange={()=>handleFilter(filter.name)} 
+                                className="default__check" 
+                                name="filter" 
+                                value={filter.name}
+                                checked={checked==filter.name ? true:false}
+                                />
+
                                 <span className="custom__check"></span>
-                                <p className='tracking-in-expand filter-text'>{filter}</p>
+                                <p className='tracking-in-expand filter-text'>{filter.name}</p>
                             </label>
                         ))}
                     </div>
@@ -234,22 +356,22 @@ function MainContent() {
                     <form>
                     <div className="check__item">
                     <label>
-                        <input type="radio"  className="default__check" name='sort'/>
+                        <input type="radio" onChange={handleSort}  className="default__check" name='sort' value='Discounts'/>
                         <span className="custom__check"></span>
                         <StyledSortText>Discounts</StyledSortText>
                     </label>
                     <label>
-                        <input type="radio" className="default__check" name='sort'/>
+                        <input type="radio" onChange={handleSort} className="default__check" name='sort' value='Best Selling'/>
                         <span className="custom__check"></span>
                         <StyledSortText>Best Selling</StyledSortText>
                     </label>
                     <label>
-                        <input type="radio" className="default__check" name='sort'/>
+                        <input type="radio" onChange={handleSort} className="default__check" name='sort' value='Price, low to high'/>
                         <span className="custom__check"></span>
                         <StyledSortText>Price, low to high</StyledSortText>
                     </label>
                     <label>
-                        <input type="radio" className="default__check" name='sort'/>
+                        <input type="radio" onChange={handleSort} className="default__check" name='sort' value='Price, high to low'/>
                         <span className="custom__check"></span>
                         <StyledSortText>Price, high to low</StyledSortText>
                     </label>
@@ -258,14 +380,42 @@ function MainContent() {
                 </SortContainer>
             </StyledSidebar>
             <div className='grid-container slide' key={key}>
+            {discount && 
+                Discountproducts.map(product=>(
+                    <GridElements  key={product.id}>
+                        <ImageContainer>
+                            <StyledDiscountImg src={discountImg}/>
+                            <StyledImg src={product.src}/>
+                        </ImageContainer>
+                        <NameText>{product.name}</NameText>
+                        <PriceText>{product.price}</PriceText>
+                        <AddtoCartBtn className="effect effect-1" onClick={()=>handleAdd(product)}>Add to cart</AddtoCartBtn>
+                </GridElements>
+                ))
+
+            }
+            {bestSelling && 
+                BestSellingproducts.map(product=>(
+                    <GridElements  key={product.id}>
+                        <ImageContainer>
+                            <StyledDiscountImg src={bestSellingImg}/>
+                            <StyledImg src={product.src}/>
+                        </ImageContainer>
+                        <NameText>{product.name}</NameText>
+                        <PriceText>{product.price}</PriceText>
+                        <AddtoCartBtn className="effect effect-1"  onClick={()=>handleAdd(product)}>Add to cart</AddtoCartBtn>
+                </GridElements>
+                ))
+            }
                 {products.map(product=>(
                     <GridElements  key={product.id}>
                     <StyledImg src={product.src}/>
                         <NameText>{product.name}</NameText>
                         <PriceText>{product.price}</PriceText>
-                        <AddtoCartBtn className="effect effect-1" onClick={()=>handleAdd(product)}>Add to cart</AddtoCartBtn>
+                        <AddtoCartBtn className="effect effect-1" id={addedtoCart ? 'added' : null} onClick={()=>handleAdd(product)}>Add to cart</AddtoCartBtn>
                 </GridElements>
                 ))}
+            
             </div>
         </StyledContainer>
         </div>

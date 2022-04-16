@@ -8,6 +8,10 @@ import Avatar from '@mui/material/Avatar';
 import Modal from '@mui/material/Modal';
 import CloseIcon from '@mui/icons-material/Close';
 import CartContext from './CartContext';
+import CompleteOrder from './CompleteOrder';
+import { Navigate } from 'react-router-dom';
+import Fab from '@mui/material/Fab';
+import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 
 const style = {
   position: 'absolute',
@@ -19,7 +23,8 @@ const style = {
   bgcolor: 'white',
   border:'0px',
   outline: 'none',
-  padding: '50px'
+  padding: '50px',
+  overflowY: 'scroll'
 };
 const CloseButtonContainer=styled.div`
     width:100%;
@@ -62,42 +67,50 @@ const StyledHr2=styled.hr`
     margin-top:20px;
     margin-bottom:20px;
 `
+const StyledHr3=styled(StyledHr2)`
+margin-top:0px;
+margin-bottom:0px;
+`
 const TitleContainer=styled.div`
     width:100%;
     height:20px;
     position: absolute;
-    top:120px;
+    top:100px;
     
 `
 const StyledTitleText=styled.p`
     font-weight:bold;
+    margin-bottom:20px
 `
 const ProductsConatiner=styled.div`
-    width:100%;
+    width:90%;
+    height:fit-content;
     display:flex;
     justify-content:center;
-    height:fit-content;
     flex-direction:column;
     position: absolute;
-    top:170px;
+    top:200px;
 `
 const Products=styled.div`
     display:flex;
     flex-direction: row;
     position:relative;
     width:100%;
-    gap:40px
+    gap:40px;
 `
 const ProductImage=styled.img`
     width:15%;
     border-radius:20px;
 `
 const ProductDetailContainer=styled.div`
-    width:70%;
+    width:75%;
+    position:relative
+    
 `
 const ProductDetailTitleContainer=styled.div`
     width:70%;
     position: relative;
+    
 `
 const ProductDetailTitle=styled.p`
     font-weight:bold;
@@ -121,7 +134,7 @@ const CloseIconContainer=styled.div`
     border-radius:50%;
     position:absolute;
     top:5px;
-    right:150px;
+    right:50px;
     &:hover{
         border:1px solid black;
         color:black;
@@ -173,6 +186,7 @@ const CartContainer=styled.div`
     gap:10px;
     border:1px solid gray;
     cursor:pointer;
+    position:relative;
 `
 
 const StyledAppbar=styled(AppBar)`
@@ -186,14 +200,128 @@ const StyledText=styled.p`
     font-weight:bold;
     font-size:12px
 `
+const InputContainer=styled.div`
+    position:absolute;
+    right:40px;
+    bottom:-10px
+`
+const RoundBtn=styled.span`
+    width:20px;
+    height:20px;
+    background:transparent;
+    border-radius:50%;
+    // padding:8px 5px 8px 5px;
+    border:1px solid black;
+    display: inline-block;
+    vertical-align: middle;
+    text-align: center;
+    cursor:pointer;
+    &:hover{
+        background:black;
+        color:white;
+        border:1px solid white;
+    }
+    &.disabled{
+        color:lightgray;
+        border:1px solid lightgray;
+        cursor:not-allowed;
+        &:hover{
+            background:white;
+        }
+    }
+`
+const NumberInput=styled.input`
+    height:34px;
+    width: 30px;
+    text-align: center;
+    border:0px;
+    border-radius:4px;
+    display: inline-block;
+    vertical-align: middle;
+    font-size: 15px;
+    &::-webkit-outer-spin-button,&::-webkit-inner-spin-button{
+        appearance: none;
+        margin: 0;
+    };
+    -moz-appearance: textfield;
+`
 
+const TotalPriceContainer=styled.div`
+    position: relative;
+    border:1px solid black;
+    height:30px;
+    width:80%;
+    border-radius:20px;
+    padding:5px
+`
+const TotalText=styled.p`
+    position:absolute;
+    left:0px;
+    font-size:13px;
+    font-weight:bold;
+    padding-left:10px
+`
+const TotalPrice=styled.p`
+    position:absolute;
+    right:0px;
+    font-size:13px;
+    font-weight:bold;
+    padding-right:10px;
+`
+const NumberContainer=styled.div`
+    background:black;
+    width:15px;
+    height:15px;
+    border-radius:50%;
+    position:absolute;
+    right:-3px;
+    top:-5px
+`
 
+let sum=0;
 export default function NavBar() {
     const {cart,handleDelete}=React.useContext(CartContext);
     const [open, setOpen] = React.useState(false);
+    const [quantity,setQuantity]=React.useState(1);
+    const [disableMinus,setDisableMinus]=React.useState(false);
+    const [totalPrice,setTotalPrice]=React.useState('0');
+    const [gotoCompelete,setGotoCompelete]=React.useState(false);
     const handleCartClick=()=>{
         setOpen(!open);
     }
+    const handleIncremet=(item,e)=>{
+        console.log(e.target.id)
+        console.log(item.id);
+        setQuantity(quantity+1);
+    }
+    const handleDecrement=()=>{
+        if(quantity>=2){
+            setQuantity(quantity-1);
+        }
+        
+    }
+    const handleComplete=()=>{
+        setGotoCompelete(true);
+    }
+
+    
+    React.useEffect(() => {
+        sum=0;
+        cart.map(item=>{
+            sum+=item.priceNumber;
+        })
+        setTotalPrice(sum.toLocaleString())
+    },[cart])
+    
+    React.useEffect(() => {
+        if(quantity==1){
+            setDisableMinus(true);
+        }
+        else{
+            setDisableMinus(false)
+        }
+        setTotalPrice((sum*quantity).toLocaleString())
+    }, [quantity])
     
 return (
     <Box sx={{ flexGrow: 1 }}>
@@ -211,6 +339,7 @@ return (
                 </LinkContainer>
                 <CartAvatarContainer>
                     <CartContainer onClick={handleCartClick}>
+                        <NumberContainer><p style={{color:'white',fontWeight:'bold',paddingLeft:'4px'}}>{cart.length}</p></NumberContainer>
                         <StyledCartLogo/>
                     </CartContainer>
                 </CartAvatarContainer>
@@ -235,6 +364,12 @@ return (
         <StyledHr/>
         <TitleContainer>
             <StyledTitleText>Order Summary</StyledTitleText>
+            {/* <StyledHr3/> */}
+            <TotalPriceContainer>
+                <TotalText>Total:</TotalText>
+                <TotalPrice>${totalPrice}</TotalPrice>
+            </TotalPriceContainer>
+            {/* <StyledHr3/> */}
         </TitleContainer>
         <ProductsConatiner>
             {cart.length ? cart.map((item,id)=>(
@@ -250,16 +385,28 @@ return (
                     <CloseIconContainer>
                         <StyledDeleteIcon onClick={()=>handleDelete(item)}/>
                     </CloseIconContainer>
+                    <InputContainer>
+                    <RoundBtn className={disableMinus ? 'disabled' : ''} onClick={handleDecrement}>-</RoundBtn>
+                    <NumberInput type='number' value={quantity}/> 
+                    <RoundBtn onClick={()=>handleIncremet(item)}>+</RoundBtn>
+                </InputContainer>
                 </ProductDetailContainer>
                 </Products>
                 <StyledHr2/>
                 </div>
             )) : <h2>Cart Empty!</h2>}
         </ProductsConatiner>
+        {/* <button onClick={handleComplete} style={{padding:'10px'}}>complete</button> */}
+        <Fab onClick={handleComplete} variant="extended" size="medium" color="black" aria-label="add" style={{position:'absolute',top:'15px'}}>
         
+        Complete Order
+        <ArrowForwardIcon/>
+        </Fab>
         </Box>
+        
     </Modal>
    </StyledDivContainer>
+   {gotoCompelete && <Navigate to='/complete'/>}
     </Box>
 );
 }

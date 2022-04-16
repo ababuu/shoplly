@@ -1,4 +1,5 @@
 import './App.css';
+import CompleteOrder from './components/CompleteOrder';
 
 import MainContent from './components/MainContent';
 
