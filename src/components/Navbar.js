@@ -12,27 +12,58 @@ import CompleteOrder from './CompleteOrder';
 import { Navigate } from 'react-router-dom';
 import Fab from '@mui/material/Fab';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
-
+import '../style/NavBar.css';
+import Logo from '../images/Logo_main.png';
 const style = {
   position: 'absolute',
   top: '50%',
-  right: '-375px',
+  right: '-30%',
   transform: 'translate(-50%, -50%)',
   width: '55%',
   height:'100%',
   bgcolor: 'white',
+  ['@media (max-width:500px)']: {
+    right:'-50%',
+    width:'100%',
+    padding: '5px',
+  },
   border:'0px',
   outline: 'none',
   padding: '50px',
-  overflowY: 'scroll'
+  overflowY: 'scroll',
 };
+const style2={
+    width: '100%',
+    height:'100%',
+    bgcolor: 'white',
+    border:'0px',
+    outline: 'none',
+    padding: '50px',
+    overflowY: 'scroll',
+  };
+const StyedBox=styled`
+    position: absolute;
+    top: 50%;
+    right: -375px;
+    transform: translate(-50%, -50%);
+    transition: transform 0.3s linear;
+    width: 55%;
+    height:100%;
+    bgcolor: white;
+    border:0px;
+    outline: none;
+    padding: 50px;
+    overflowY: scroll;
+`
 const CloseButtonContainer=styled.div`
     width:100%;
     height:80px;
 `
 const StyledDivContainer=styled.div`
+
     width:100%;
     position:relative;
+    
 `
 const StyledCloseButton=styled.button`
     padding: 7px;
@@ -53,23 +84,24 @@ const StyledHr=styled.hr`
     top:80px;
     border: 0;
     height: 0;
-    border-top: .1px solid #8c8c8c;
-    background-color: #fff;
+    border-top: .1px solid lightgray;
     padding: 0;
 `
 const StyledHr2=styled.hr`
     width:80%;
     border: 0;
     height: 0;
-    border-top: .1px solid #8c8c8c;
-    background-color: #fff;
+    border-top: .1px solid lightgray;
     padding: 0;
     margin-top:20px;
     margin-bottom:20px;
 `
-const StyledHr3=styled(StyledHr2)`
-margin-top:0px;
-margin-bottom:0px;
+const StyledHr3=styled.hr`
+    width:100%;
+    border: 0;
+    height: 0;
+    border-top: .1px solid lightgray;
+    padding: 0;
 `
 const TitleContainer=styled.div`
     width:100%;
@@ -90,6 +122,12 @@ const ProductsConatiner=styled.div`
     flex-direction:column;
     position: absolute;
     top:200px;
+    @media(max-width:500px){
+        width:100%;
+        display:flex;
+        justify-content:center;
+        align-items:center;
+    }
 `
 const Products=styled.div`
     display:flex;
@@ -97,20 +135,30 @@ const Products=styled.div`
     position:relative;
     width:100%;
     gap:40px;
+    @media(max-width:500px){
+        width:100%
+    }
 `
 const ProductImage=styled.img`
     width:15%;
     border-radius:20px;
+    height:15%;
+    padding:5px;
+    @media(max-width:500px){
+        width:25%;
+    }
 `
 const ProductDetailContainer=styled.div`
     width:75%;
-    position:relative
-    
+    position:relative;
+    height: 95px;
+    @media(max-width:500px){
+        width:90%;
+    }
 `
 const ProductDetailTitleContainer=styled.div`
     width:70%;
     position: relative;
-    
 `
 const ProductDetailTitle=styled.p`
     font-weight:bold;
@@ -118,14 +166,10 @@ const ProductDetailTitle=styled.p`
     margin-bottom: 7px
 `
 const ProductDetailText=styled.p`
-    
+    margin-bottom:10px
 `
 const ProductPrice=styled.p`
     position:absolute;
-    bottom:0px
-`
-const ProductQuantity=styled.input`
-    
 `
 const CloseIconContainer=styled.div`
     height:16px;
@@ -165,16 +209,35 @@ const LinkContainer=styled.div`
     justify-content:center;
     algn-items:center;
     gap:50px;
-    width:80%
+    width:80%;
+    @media(max-width:500px){
+        gap:30px;
+        width:60%;
+        margin-left:40px;
+        margin-top:40px
+    }
 `
 const LogoContainer=styled.div`
     Width:10%;
+    @media(max-width:500px){
+        width: 100%;
+    }
+`
+const LogoImage=styled.img`
+width:100%;
+@media(max-width:500px){
+    width: 200%;
+    margin-left:-10px;
+}
 `
 const CartAvatarContainer=styled.div`
     width:10%;
     display:flex;
     justify-content:center;
     algn-items:center;
+    @media(max-width:500px){
+        margin-left:40px;
+    }
 `
 const CartContainer=styled.div`
     width:fit-content;
@@ -190,7 +253,7 @@ const CartContainer=styled.div`
 `
 
 const StyledAppbar=styled(AppBar)`
-box-shadow:none
+    box-shadow:none
 `
 const StyledCartLogo=styled(LocalMallOutlinedIcon)`
     font-size:18px;
@@ -203,7 +266,19 @@ const StyledText=styled.p`
 const InputContainer=styled.div`
     position:absolute;
     right:40px;
-    bottom:-10px
+    bottom:-25px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    @media(max-width:500px){
+        bottom:-35px
+    }
+`
+const QuantityText=styled.p`
+    font-weight:bold;
+    font-size:13px;
+    padding:10px;
+    padding-right:13px
 `
 const RoundBtn=styled.span`
     width:20px;
@@ -230,21 +305,7 @@ const RoundBtn=styled.span`
         }
     }
 `
-const NumberInput=styled.input`
-    height:34px;
-    width: 30px;
-    text-align: center;
-    border:0px;
-    border-radius:4px;
-    display: inline-block;
-    vertical-align: middle;
-    font-size: 15px;
-    &::-webkit-outer-spin-button,&::-webkit-inner-spin-button{
-        appearance: none;
-        margin: 0;
-    };
-    -moz-appearance: textfield;
-`
+
 
 const TotalPriceContainer=styled.div`
     position: relative;
@@ -252,7 +313,11 @@ const TotalPriceContainer=styled.div`
     height:30px;
     width:80%;
     border-radius:20px;
-    padding:5px
+    padding:5px;
+    @media(max-width:500px){
+        width:90%;
+        margin:auto;
+    }
 `
 const TotalText=styled.p`
     position:absolute;
@@ -269,41 +334,80 @@ const TotalPrice=styled.p`
     padding-right:10px;
 `
 const NumberContainer=styled.div`
-    background:black;
-    width:15px;
-    height:15px;
+    
+    width:12px;
+    height:12px;
     border-radius:50%;
     position:absolute;
     right:-3px;
-    top:-5px
+    top:-5px;
+    background: linear-gradient(to right, #12c2e9, #c471ed, #f64f59); 
+`
+const CartMobile=styled.div`
+    height: 100vh;
+    width: 500px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: white;
+    color: black;
+    padding:30px;
+    @media(max-width:501px){
+        display:none;
+    }
+`
+const StyedModal=styled(Modal)`
+transform: translateX(100%);
+transition: transform 0.3s linear;
+&.active {
+    transform: translateX(0%);
+};
+@media(min-width:500px){
+    display:none;
+}`
+const StyledAvatar=styled(Avatar)`
+@media(max-width:500px){
+    display:none;
+}
 `
 
 let sum=0;
-export default function NavBar() {
+export default function NavBar(props) {
     const {cart,handleDelete}=React.useContext(CartContext);
     const [open, setOpen] = React.useState(false);
     const [quantity,setQuantity]=React.useState(1);
     const [disableMinus,setDisableMinus]=React.useState(false);
     const [totalPrice,setTotalPrice]=React.useState('0');
     const [gotoCompelete,setGotoCompelete]=React.useState(false);
+    const quantityRef=React.useRef();
     const handleCartClick=()=>{
         setOpen(!open);
     }
-    const handleIncremet=(item,e)=>{
-        console.log(e.target.id)
-        console.log(item.id);
+    const handleIncremet=(event)=>{
         setQuantity(quantity+1);
+        const id=event.currentTarget.id;
+        cart.map(item=>{
+            if(id==item.id){
+                item.quantity+=1;
+            }
+        })
+        console.log(cart)
     }
-    const handleDecrement=()=>{
-        if(quantity>=2){
+    const handleDecrement=(event,item)=>{
+        const id=event.currentTarget.id;
+        if(item.quantity>=2){
             setQuantity(quantity-1);
+            cart.map(item=>{
+            if(id==item.id){
+                item.quantity-=1;
+            }
+        })
         }
-        
     }
     const handleComplete=()=>{
         setGotoCompelete(true);
+        localStorage.setItem('cart', JSON.stringify(cart));
     }
-
     
     React.useEffect(() => {
         sum=0;
@@ -318,18 +422,18 @@ export default function NavBar() {
             setDisableMinus(true);
         }
         else{
-            setDisableMinus(false)
+            setDisableMinus(false);
         }
-        setTotalPrice((sum*quantity).toLocaleString())
-    }, [quantity])
-    
+        setTotalPrice((sum*quantity).toLocaleString());
+    }, [quantity]);
 return (
     <Box sx={{ flexGrow: 1 }}>
-    <StyledAppbar position="static">
+    
+        <StyledAppbar position="static">
         <StyledContainer>
             <StyledToolbar>
                 <LogoContainer>
-                    <p>Logo</p>
+                    <LogoImage src={Logo}/>
                 </LogoContainer>
                 <LinkContainer>
                     <StyledText>Home</StyledText>
@@ -339,25 +443,25 @@ return (
                 </LinkContainer>
                 <CartAvatarContainer>
                     <CartContainer onClick={handleCartClick}>
-                        <NumberContainer><p style={{color:'white',fontWeight:'bold',paddingLeft:'4px'}}>{cart.length}</p></NumberContainer>
+                        <NumberContainer><p style={{color:'white',fontSize:'10px',paddingLeft:'4px'}}>{cart.length}</p></NumberContainer>
                         <StyledCartLogo/>
                     </CartContainer>
                 </CartAvatarContainer>
-                <Avatar alt="Remy Sharp" src="/static/images/avatar/1.jpg" />
+                <StyledAvatar  alt="Remy Sharp" src="/static/images/avatar/1.jpg" />
             </StyledToolbar>
         </StyledContainer>
     </StyledAppbar>
     
-    <hr/>
+    <StyledHr3/>
     <br/>
-
     <StyledDivContainer>
         <Modal
         open={open}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
+        style={{transition: '0.3s linear'}}
     >
-        <Box sx={style}>
+        <Box sx={style} className='nav'>
         <CloseButtonContainer>
             <StyledCloseButton onClick={handleCartClick}>Close</StyledCloseButton>
         </CloseButtonContainer>
@@ -386,9 +490,9 @@ return (
                         <StyledDeleteIcon onClick={()=>handleDelete(item)}/>
                     </CloseIconContainer>
                     <InputContainer>
-                    <RoundBtn className={disableMinus ? 'disabled' : ''} onClick={handleDecrement}>-</RoundBtn>
-                    <NumberInput type='number' value={quantity}/> 
-                    <RoundBtn onClick={()=>handleIncremet(item)}>+</RoundBtn>
+                    <RoundBtn id={item.id} className={item.quantity==1 ? 'disabled' : ''} onClick={(event)=>handleDecrement(event,item)}>-</RoundBtn>
+                    <QuantityText ref={quantityRef}>{item.quantity}</QuantityText> 
+                    <RoundBtn id={item.id} onClick={(event)=>handleIncremet(event)}>+</RoundBtn>
                 </InputContainer>
                 </ProductDetailContainer>
                 </Products>
@@ -396,17 +500,15 @@ return (
                 </div>
             )) : <h2>Cart Empty!</h2>}
         </ProductsConatiner>
-        {/* <button onClick={handleComplete} style={{padding:'10px'}}>complete</button> */}
         <Fab onClick={handleComplete} variant="extended" size="medium" color="black" aria-label="add" style={{position:'absolute',top:'15px'}}>
         
         Complete Order
         <ArrowForwardIcon/>
         </Fab>
         </Box>
-        
     </Modal>
-   </StyledDivContainer>
-   {gotoCompelete && <Navigate to='/complete'/>}
+</StyledDivContainer>
+    {gotoCompelete && <Navigate to='/complete'/>}
     </Box>
 );
 }
