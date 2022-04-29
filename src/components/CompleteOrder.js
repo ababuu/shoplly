@@ -250,7 +250,7 @@ const StyledButton=styled.button`
     padding:7px;
     background:black;
     color:white;
-    margin-top:40px;
+    margin-top:50px;
     border-radius:15px;
     width:200px;
     margin-left:100px;
